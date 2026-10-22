@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mimika — Informativa sulla privacy</title>
+  <meta name="theme-color" content="#140f33" />
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <style>
+    @font-face { font-family: Fredoka; src: url(../fonts/fredoka-500.woff2) format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: Fredoka; src: url(../fonts/fredoka-700.woff2) format('woff2'); font-weight: 700; font-display: swap; }
+    :root { --night: #140f33; --gold: #ffd27a; --def: #5ee6c5; --text: #fff7ee; --muted: rgba(255, 247, 238, 0.74); --line: rgba(255, 255, 255, 0.12); }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 500 17px/1.6 Fredoka, system-ui, sans-serif; color: var(--text); background: #140f33 linear-gradient(180deg, #140f33, #2a1a4d); min-height: 100vh; }
+    main { width: min(760px, 100% - 32px); margin: 0 auto; padding: 40px 0 70px; }
+    h1 { font: 700 clamp(28px, 5vw, 40px)/1.15 Fredoka; color: var(--gold); margin: 0 0 6px; }
+    h2 { font: 700 22px Fredoka; margin: 32px 0 6px; color: var(--def); }
+    p, li { color: var(--muted); }
+    a { color: var(--gold); }
+    .back { display: inline-block; margin-bottom: 24px; text-decoration: none; }
+    hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="../">← Torna al gioco</a>
+    <h1>Informativa sulla privacy</h1>
+    <p>Ultimo aggiornamento: 22 ottobre 2026. Vale per il sito <b>saari90.github.io/Mimika-gioco</b> e per le app Mimika per Android e iOS.</p>
+
+    <h2>In breve: non raccogliamo dati personali</h2>
+    <p>Mimika non ha account, non ha un server di gioco, non mostra pubblicità e non usa strumenti di analisi o di tracciamento.</p>
+
+    <h2>Cosa resta sul tuo dispositivo</h2>
+    <ul>
+      <li>Il nome che scegli, le impostazioni (volumi, ambiente, grafica), i record della Sopravvivenza e della Sfida del giorno e l'elenco delle fortezze che hai inviato sono salvati solo nella memoria locale del browser o dell'app (<i>localStorage</i>). Non vengono mai inviati a nessuno. Puoi cancellarli svuotando i dati del sito o disinstallando l'app.</li>
+      <li>Per giocare offline il gioco conserva una copia dei propri file nella cache del browser (service worker).</li>
+    </ul>
+
+    <h2>Link di sfida e referti</h2>
+    <p>Quando condividi una sfida o un risultato, la fortezza, il nome che hai scelto e i tiri della partita sono scritti dentro il link, dopo il simbolo <b>#</b>. Questa parte del link non viene mai inviata al server che ospita il sito: la legge solo il gioco sul dispositivo di chi lo apre. Il link arriva solo alle persone a cui lo mandi tu (per esempio con WhatsApp, secondo le regole di quel servizio).</p>
+
+    <h2>Duello live</h2>
+    <p>Il duello in diretta collega i due dispositivi direttamente con WebRTC: i dati della partita passano da un giocatore all'altro, senza un nostro server. Per trovare la strada tra le due reti il browser contatta i server STUN pubblici di Google e Cloudflare, che vedono il tuo indirizzo IP come qualunque sito visitato; nessun contenuto della partita passa da lì. Per gli inviti corti, offerta e risposta di collegamento passano per pochi secondi dal servizio pubblico <a href="https://ntfy.sh">ntfy.sh</a>, <b>cifrate</b> con una chiave che esiste solo nel link d'invito: il servizio non può leggerle e le cancella entro 12 ore. Con il «metodo manuale» l'invito e la risposta li scambiate voi due, con il canale che preferite.</p>
+
+    <h2>Hosting</h2>
+    <p>Il sito è ospitato da GitHub Pages (GitHub, Inc.), che come ogni servizio di hosting può registrare dati tecnici delle visite (indirizzo IP, browser) per sicurezza e funzionamento; vedi l'<a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">informativa di GitHub</a>. Font e grafica sono serviti dallo stesso sito: nessuna risorsa di terze parti.</p>
+
+    <h2>Minori</h2>
+    <p>Il gioco è adatto a tutti e non chiede alcun dato personale, quindi non raccoglie dati di minori.</p>
+
+    <h2>Contatti</h2>
+    <p>Per domande su questa informativa scrivi tramite la pagina GitHub dell'autore: <a href="https://github.com/Saari90">github.com/Saari90</a>.</p>
+
+    <hr />
+    <h1 lang="en">Privacy policy (English)</h1>
+    <p lang="en">Mimika collects no personal data: no accounts, no game server, no ads, no analytics. Your name, settings and records stay in your device's local storage. Challenge and result links carry the game data after the <b>#</b>, which is never sent to the web server. Live duels connect the two devices directly via WebRTC; public STUN servers (Google, Cloudflare) only help find a network path, and short invites pass the connection offer through ntfy.sh encrypted with a key that exists only in the invite link. The site is hosted on GitHub Pages, which may log technical request data. Contact: <a href="https://github.com/Saari90">github.com/Saari90</a>.</p>
+  </main>
+</body>
+</html>

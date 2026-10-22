@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mimika — Costruisci. Nasconditi. Assedia.</title>
+  <meta name="description" content="Mimika è un gioco 1 contro 1 di assedio artistico: costruisci una fortezza, nascondi il camaleonte, assedia quella dell'avversario. Gratis, nel browser, anche via link." />
+  <meta name="theme-color" content="#140f33" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Mimika — Costruisci. Nasconditi. Assedia." />
+  <meta property="og:description" content="Nascondi il camaleonte nella tua fortezza o scova quello dell'avversario. 1 contro 1, gratis, nel browser." />
+  <meta property="og:image" content="https://saari90.github.io/Mimika-gioco/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <style>
+    @font-face { font-family: Fredoka; src: url(../fonts/fredoka-500.woff2) format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: Fredoka; src: url(../fonts/fredoka-700.woff2) format('woff2'); font-weight: 700; font-display: swap; }
+    /* palette "Crepuscolo di carta" (docs/02-ART-DIRECTION.md) */
+    :root {
+      --night: #140f33; --plum: #47246a; --rose: #c4566a; --peach: #f7b27a; --ink: #1b1233;
+      --def: #5ee6c5; --atk: #ff7a6b; --gold: #ffd27a; --pink: #ff9ec7; --bolt: #cbb8ff;
+      --text: #fff7ee; --muted: rgba(255, 247, 238, 0.72); --panel: rgba(27, 18, 51, 0.62); --line: rgba(255, 255, 255, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; background: var(--night); }
+    body {
+      font: 500 17px/1.55 Fredoka, system-ui, sans-serif; color: var(--text);
+      background: linear-gradient(180deg, var(--night) 0%, var(--plum) 14%, #5a2a62 45%, #2a1a4d 75%, var(--night) 100%);
+      min-height: 100vh; overflow-x: hidden;
+    }
+    a { color: inherit; }
+    .wrap { width: min(1120px, 100% - 32px); margin: 0 auto; }
+    header.top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+    .mini-logo { font: 700 22px Fredoka; letter-spacing: .06em; color: var(--gold); text-decoration: none; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px; padding: 13px 24px; border-radius: 999px;
+      font: 700 18px Fredoka; text-decoration: none; color: var(--ink); background: linear-gradient(135deg, var(--gold), #ff9e7a);
+      box-shadow: 0 6px 0 rgba(27, 18, 51, .55), 0 14px 34px rgba(255, 158, 122, .35); transition: transform .15s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.ghost { background: rgba(255, 255, 255, .08); color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
+    .btn.small { padding: 9px 18px; font-size: 15px; }
+
+    .hero { display: grid; grid-template-columns: 1fr 1.15fr; gap: 40px; align-items: center; padding: 36px 0 70px; }
+    .logo { font: 700 clamp(64px, 11vw, 136px)/.9 Fredoka; letter-spacing: .02em; display: flex; }
+    .logo span {
+      background: linear-gradient(160deg, #fff3d6 10%, var(--pink) 45%, var(--gold) 70%, var(--def) 100%); background-size: 300% 300%;
+      -webkit-background-clip: text; background-clip: text; color: transparent; animation: shift 8s ease-in-out infinite, bob 3.4s ease-in-out infinite;
+      animation-delay: calc(var(--i) * -.35s), calc(var(--i) * .12s); filter: drop-shadow(0 5px 0 var(--ink));
+    }
+    @keyframes shift { 50% { background-position: 100% 100%; } }
+    @keyframes bob { 50% { transform: translateY(-6px); } }
+    .tagline { margin-top: 16px; font: 700 clamp(15px, 1.8vw, 20px) Fredoka; letter-spacing: .16em; color: var(--gold); }
+    .pitch { margin: 18px 0 26px; font-size: 19px; color: var(--muted); max-width: 30em; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .shot { border-radius: 22px; overflow: hidden; box-shadow: 0 0 0 1px var(--line), 0 30px 80px rgba(8, 4, 24, .6); transform: rotate(1.2deg); }
+    .shot img { display: block; width: 100%; height: auto; }
+
+    section { padding: 56px 0; }
+    h2 { font: 700 clamp(28px, 4vw, 42px)/1.1 Fredoka; margin-bottom: 10px; }
+    .lead { color: var(--muted); max-width: 40em; margin-bottom: 28px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { padding: 22px; border-radius: 22px; background: var(--panel); box-shadow: inset 0 0 0 1px var(--line); backdrop-filter: blur(10px); }
+    .card h3 { font: 700 22px Fredoka; margin-bottom: 6px; }
+    .card p { color: var(--muted); }
+    .pill { display: inline-block; padding: 3px 12px; border-radius: 999px; font: 700 12px Fredoka; letter-spacing: .14em; color: var(--ink); margin-bottom: 10px; }
+    .def .pill { background: var(--def); } .atk .pill { background: var(--atk); } .neu .pill { background: var(--gold); }
+    .def { box-shadow: inset 0 0 0 1px rgba(94, 230, 197, .35); } .atk { box-shadow: inset 0 0 0 1px rgba(255, 122, 107, .35); }
+    .feature { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; margin-bottom: 34px; }
+    .feature:nth-child(even) .shot { order: 2; transform: rotate(-1deg); }
+    .feature .shot { transform: rotate(-1deg); }
+    .feature h3 { font: 700 26px Fredoka; margin-bottom: 6px; }
+    .feature p { color: var(--muted); }
+    .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -1px; margin-right: 6px; }
+    .stores { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+    .store { display: inline-flex; flex-direction: column; padding: 10px 20px; border-radius: 14px; background: #0b0820; box-shadow: inset 0 0 0 1px var(--line); line-height: 1.2; }
+    .store small { color: var(--muted); font-size: 12px; } .store b { font-size: 18px; }
+    footer { padding: 40px 0 60px; color: var(--muted); font-size: 15px; display: flex; flex-wrap: wrap; gap: 18px; justify-content: space-between; border-top: 1px solid var(--line); }
+
+    @media (max-width: 820px) {
+      .hero, .feature, .grid2 { grid-template-columns: 1fr; }
+      .grid3 { grid-template-columns: 1fr; }
+      .feature:nth-child(even) .shot { order: 0; }
+      .hero { padding-top: 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .logo span { animation: none; } html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="mini-logo" href="./">MIMIKA</a>
+      <a class="btn small" href="../">Gioca ora</a>
+    </header>
+
+    <div class="hero">
+      <div>
+        <h1 class="logo" aria-label="Mimika"><span style="--i:0">M</span><span style="--i:1">I</span><span style="--i:2">M</span><span style="--i:3">I</span><span style="--i:4">K</span><span style="--i:5">A</span></h1>
+        <p class="tagline">COSTRUISCI. NASCONDITI. ASSEDIA.</p>
+        <p class="pitch">Un nascondino con le fortezze. Uno costruisce e ci nasconde <b>Mimika</b>, il camaleonte che si mimetizza; l'altro ha un arsenale limitato per scovarla e colpirla. Fisica vera, partite di due minuti, nessun account.</p>
+        <div class="cta">
+          <a class="btn" href="../">▶ Gioca ora, gratis</a>
+          <a class="btn ghost" href="#modalita">Come si gioca</a>
+        </div>
+      </div>
+      <div class="shot"><img src="4-esplosione.jpg" alt="Una bomba esplode contro una fortezza di pietra, legno e muschio al tramonto" width="1920" height="1080" /></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap grid2">
+      <div class="card def">
+        <span class="pill">DIFESA</span>
+        <h3>Costruisci e inganna</h3>
+        <p>Sei materiali dalla fisica onesta: legno economico, pietra pesante, cristallo fragile, ferro che ferma la trivella ma conduce il fulmine, muschio che assorbe le esplosioni e la nuova <b>seta specchiante</b> che rimanda il fulmine a chi lo lancia. Nascondi Mimika e semina esche che luccicano come lei.</p>
+      </div>
+      <div class="card atk">
+        <span class="pill">ATTACCO</span>
+        <h3>Leggi la struttura, poi colpisci</h3>
+        <p>Otto strumenti contati: masso, bomba, trivella, fulmine, bufera, eco che rivela il nascondiglio, <b>termite</b> che rosicchia il legno e <b>piena</b> che spinge i blocchi bassi e bagna il ferro. Mimika si vede solo per un riflesso ogni tanto: occhio alle esche!</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="modalita">
+    <div class="wrap">
+      <h2>Tre modi di giocare</h2>
+      <p class="lead">Nessun server e nessuna registrazione: i dati della partita viaggiano dentro i link, oppure direttamente tra i due dispositivi.</p>
+      <div class="grid3">
+        <div class="card neu"><span class="pill">IN DUE</span><h3>Stesso dispositivo</h3><p>Uno costruisce, l'altro si gira. Poi ci si passa il telefono e via all'assedio. Rivincita a ruoli invertiti con il punteggio.</p></div>
+        <div class="card neu"><span class="pill">A DISTANZA</span><h3>Via link o in diretta</h3><p>Manda la tua fortezza su WhatsApp: l'altro la gioca quando vuole e ti rimanda il referto, verificabile rigiocando la battaglia. Oppure il <b>duello live</b>: guardi l'assedio in diretta mentre accade.</p></div>
+        <div class="card neu"><span class="pill">DA SOLO</span><h3>Sopravvivenza e sfida del giorno</h3><p>Quante ondate del Cacciatore automatico regge la tua fortezza? E ogni giorno una fortezza nuova, uguale per tutti: scova Mimika con meno colpi dei tuoi amici.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="feature">
+        <div class="shot"><img src="2-costruzione.jpg" alt="La fase di costruzione con la barra dei materiali" loading="lazy" width="1920" height="1080" /></div>
+        <div><h3>La seta specchiante</h3><p><span class="swatch" style="background:linear-gradient(135deg,#ece4ff,#5ee6c5,#ffd27a,#ff7a6b,#8a76cc)"></span>Un drappo iridescente leggero e fragile: non regge gli urti, ma il fulmine che la tocca torna indietro e abbaglia il Cacciatore. Il tetto perfetto per una gabbia di ferro.</p></div>
+      </div>
+      <div class="feature">
+        <div class="shot"><img src="5-piena.jpg" alt="Un'onda di piena travolge la base della fortezza" loading="lazy" width="1920" height="1080" /></div>
+        <div><h3>Piena e fulmine: la combo</h3><p>L'onda d'acqua scivola sul campo e sposta i blocchi leggeri. Il ferro resta al suo posto, ma bagnato: il fulmine successivo salta da un ferro all'altro anche attraverso le fessure.</p></div>
+      </div>
+      <div class="feature">
+        <div class="shot"><img src="7-sopravvivenza.jpg" alt="La modalità Sopravvivenza contro il Cacciatore automatico" loading="lazy" width="1920" height="1080" /></div>
+        <div><h3>Sopravvivenza</h3><p>Il Cacciatore automatico attacca a ondate, ogni volta con l'arsenale pieno e la mira più precisa, mentre i danni restano. Il tuo record è il numero di ondate superate.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap card" style="text-align:center;padding:40px 22px">
+      <h2>Pronto a nascondere Mimika?</h2>
+      <p class="lead" style="margin:0 auto 22px">Gira nel browser di telefono, tablet e computer. Si installa come app e funziona anche offline.</p>
+      <a class="btn" href="../">▶ Gioca ora</a>
+      <div class="stores" style="justify-content:center">
+        <span class="store"><small>Prossimamente su</small><b>Google Play</b></span>
+        <span class="store"><small>Prossimamente su</small><b>App Store</b></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <footer>
+      <span>MIMIKA · grafica e musica generate dal codice, nessun dato raccolto</span>
+      <span><a href="../privacy/">Informativa sulla privacy</a> · <a href="../">Gioca</a></span>
+    </footer>
+  </div>
+</body>
+</html>

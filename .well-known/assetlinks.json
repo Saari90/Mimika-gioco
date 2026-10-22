@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.mimika.game",
+      "sha256_cert_fingerprints": [
+        "74:EC:95:E6:0C:F1:65:86:8B:14:E9:55:CA:DF:69:4B:E4:6A:95:D0:BE:7F:D7:62:55:95:8A:35:E0:06:6A:0E",
+        "89:40:F7:10:8A:21:9C:5E:DD:6E:C5:A7:CB:AF:1B:A5:22:95:4B:A0:A1:E7:9C:6C:6D:25:72:7E:CA:94:E3:A4"
+      ]
+    }
+  }
+]
